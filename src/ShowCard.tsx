@@ -4,6 +4,7 @@ interface ShowCardProps {
     name: string;
 }
 
+
 const ShowCard: React.FC<ShowCardProps> = ({ name }) => {
     const [flipped, setFlipped] = useState(false);
 

@@ -7,16 +7,30 @@ import { SendStartGame, SendHit, SendStand } from './SendMessages';
 import ShowWinner from './ShowWinner';
 
 function App() {
-  const [backgroundClass, setbackgroundClass] = useState("startbackground");
+  const [backgroundClass, setBackgroundClass] = useState("startbackground");
   const [gameStarted, setGameStarted] = useState(false);
   const [playerCards, setPlayerCards] = useState(Array(8).fill(''));
   const [dealerCards, setDealerCards] = useState(Array(8).fill(''));
   const [playerPoints, setPlayerPoints] = useState(0);
+  const [dealerPoints, setDealerPoints] = useState(null);
   const [winnerMessage, setWinnerMessage] = useState("");
+
+  const resetGame = () => {
+    setTimeout(() => {
+      setBackgroundClass("startbackground");
+      setGameStarted(false);
+      setPlayerCards(Array(8).fill(''));
+      setDealerCards(Array(8).fill(''));
+      setPlayerPoints(0);
+      setDealerPoints(null);
+      setWinnerMessage("");
+    }, 4000); 
+  };
+
 
   const handleStartClick = async () => {
     setGameStarted(true);
-    setbackgroundClass("background");
+    setBackgroundClass("background");
     const data = await SendStartGame();
     setPlayerCards((prev) => {
       const newCards = [...prev];
@@ -31,7 +45,16 @@ function App() {
       newCards[1] = data.dealerCard;
       return newCards;
     });
-    setWinnerMessage(data.howisthewinner);
+    if (data.howisthewinner) {
+      setDealerCards((prev) => {
+        const newCards = [...prev];
+        newCards[0] = data.dealerfirstcard;
+        return newCards;
+      });
+      setDealerPoints(data.delerPoints);
+      setWinnerMessage(data.howisthewinner);
+      resetGame();
+    }
   };
 
   const handleHitClick = async () => {
@@ -48,13 +71,29 @@ function App() {
     });
     setPlayerPoints(data.playerPoints);
     if (data.howisthewinner) {
+      setDealerCards((prev) => {
+        const newCards = [...prev];
+        newCards[0] = data.dealerfirstcard;
+        return newCards;
+      });
+      setDealerPoints(data.delerPoints);
       setWinnerMessage(data.howisthewinner);
+      resetGame();
     }
   };
 
   const handleStandClick = async () => {
     const data = await SendStand();
-    setWinnerMessage(data.howisthewinner);
+    if (data.howisthewinner) {
+      setDealerCards((prev) => {
+        const newCards = [...prev];
+        newCards[0] = data.dealerfirstcard;
+        return newCards;
+      });
+      setDealerPoints(data.delerPoints);
+      setWinnerMessage(data.howisthewinner);
+      resetGame();
+    }
   };
 
   return (
@@ -66,7 +105,7 @@ function App() {
             {dealerCards.map((card, index) => (
               <ShowCard key={index} name={card} />
             ))}
-            <Points number={null} />
+            <Points number={dealerPoints} />
           </div>
           <div className="button-container">
             <HitButton onClick={handleHitClick} />

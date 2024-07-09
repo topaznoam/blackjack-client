@@ -47,5 +47,6 @@ async function SendStand(){
     return 'Error';
   }
 }
+
   export {SendStartGame, SendHit, SendStand};
   
