@@ -1,3 +1,11 @@
+.startbackground {
+  background-image: url('../public/images/start.jpg'); 
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: 100vw;
+}
+
 .background {
   background-image: url('../public/images/background.jpg'); 
   background-size: cover;
@@ -5,53 +13,69 @@
   height: 100vh;
   width: 100vw;
 }
+
 section {
   padding: 80px;
 }
+
 button {
   margin-left: 5px;
   margin-right: 5px;
   padding: 10px 20px;
   font-size: 16px;
+  background-color: rgba(0,0,0,0);
+  color: aliceblue;
+  font-size: xx-large;
+  font: bold;
+  border-color: rgba(0,0,0,0);
 }
+
 h1 {
-  margin: 20px;
+  margin: 0;
   font-size: xx-large;
   color: white;
 }
+
 img {
   width: 80px;
   height: auto;
   margin: 0 auto;
   display: block; /* Center the image horizontally */
 }
+
 .dealer, .player {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 5px;
 }
+
 .button-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%; 
 }
+
 .flip-card {
   display: block;
   background-color: transparent;
   perspective: 1000px;
 }
+
 .flip-card-inner {
   width: 100px; /* Set a fixed width */
   height: 120px; /* Set a fixed height */
   transition: transform 0.6s;
   transform-style: preserve-3d;
   position: relative; /* Ensure proper positioning */
+  transform: rotateY(0deg); /* Ensure the card starts unflipped */
 }
-.flip-card:hover .flip-card-inner {
+
+.flip-card.flipped .flip-card-inner {
   transform: rotateY(180deg);
 }
+
 .flip-card-front, .flip-card-back {
   position: absolute;
   width: 100%;
@@ -62,16 +86,20 @@ img {
   justify-content: center;
   align-items: center;
 }
+
 .flip-card-back { 
   transform: rotateY(180deg);
 }
+
 div {
   padding: 0;
   margin: 0;
 }
+
 .start-button-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 90vh; /* Ensure it takes the full height of the viewport */
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
 }

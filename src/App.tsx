@@ -3,75 +3,62 @@ import './App.css';
 import { StandButton, HitButton, StartButton } from './Buttons';
 import ShowCard from './ShowCard';
 import Points from './Points';
+import { SendStartGame, SendHit, SendStand } from './SendMessages';
+import ShowWinner from './ShowWinner';
 
 function App() {
+  const [backgroundClass, setbackgroundClass] = useState("startbackground");
   const [gameStarted, setGameStarted] = useState(false);
   const [playerCards, setPlayerCards] = useState(Array(8).fill(''));
   const [dealerCards, setDealerCards] = useState(Array(8).fill(''));
   const [playerPoints, setPlayerPoints] = useState(0);
+  const [winnerMessage, setWinnerMessage] = useState("");
 
   const handleStartClick = async () => {
     setGameStarted(true);
-    try {
-      const response = await fetch('http://localhost:5000/receive-data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: 'Hello from client!' }),
-      });
-      const data = await response.json();
-      console.log(data);
-      setPlayerCards((prev) => {
-        const newCards = [...prev];
-        newCards[0] = data.playerCards[0];
-        newCards[1] = data.playerCards[1];
-        return newCards;
-      });
-      setPlayerPoints(data.playerPoints);
-      setDealerCards((prev) => {
-        const newCards = [...prev];
-        newCards[0] = "back";
-        newCards[1] = data.dealerCard;
-        return newCards;
-      });
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+    setbackgroundClass("background");
+    const data = await SendStartGame();
+    setPlayerCards((prev) => {
+      const newCards = [...prev];
+      newCards[0] = data.playerCards[0];
+      newCards[1] = data.playerCards[1];
+      return newCards;
+    });
+    setPlayerPoints(data.playerPoints);
+    setDealerCards((prev) => {
+      const newCards = [...prev];
+      newCards[0] = "back";
+      newCards[1] = data.dealerCard;
+      return newCards;
+    });
+    setWinnerMessage(data.howisthewinner);
   };
 
   const handleHitClick = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/receive-data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: 'get card' }),
-      });
-      const data = await response.json();
-      setPlayerCards((prev) => {
-        const newCards = [...prev];
-        for (let i = 0; i < newCards.length; i++) {
-          if (!newCards[i]) {
-            newCards[i] = data.playerCard;
-            break;
-          }
+    const data = await SendHit();
+    setPlayerCards((prev) => {
+      const newCards = [...prev];
+      for (let i = 0; i < newCards.length; i++) {
+        if (!newCards[i]) {
+          newCards[i] = data.playerCard;
+          break;
         }
-        return newCards;
-      });
-      setPlayerPoints(data.playerPoints);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+      }
+      return newCards;
+    });
+    setPlayerPoints(data.playerPoints);
+    if (data.howisthewinner) {
+      setWinnerMessage(data.howisthewinner);
     }
   };
 
   const handleStandClick = async () => {
-    // Handle the stand logic
+    const data = await SendStand();
+    setWinnerMessage(data.howisthewinner);
   };
 
   return (
-    <div className="background">
+    <div className={backgroundClass}>
       {!gameStarted && <StartButton onClick={handleStartClick} />}
       {gameStarted && (
         <section>
@@ -83,6 +70,7 @@ function App() {
           </div>
           <div className="button-container">
             <HitButton onClick={handleHitClick} />
+            <ShowWinner message={winnerMessage} />
             <StandButton onClick={handleStandClick} />
           </div>
           <div className="player">
