@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
-interface ShowCardProps {
+
+type ShowCardProps = {
     name: string;
 }
 

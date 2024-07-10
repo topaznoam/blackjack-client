@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './App.css';
-import { StandButton, HitButton, StartButton } from './Buttons';
-import ShowCard from './ShowCard';
-import Points from './Points';
-import { SendStartGame, SendHit, SendStand } from './SendMessages';
-import ShowWinner from './ShowWinner';
+import Buttons from './components/Buttons';
+import ShowCard from './components/ShowCard';
+import Points from './components/Points';
+import { SendStartGame, SendHit, SendStand } from './api/SendMessages';
+import ShowWinner from './components/ShowWinner';
 
 function App() {
   const [backgroundClass, setBackgroundClass] = useState("startbackground");
@@ -98,7 +98,7 @@ function App() {
 
   return (
     <div className={backgroundClass}>
-      {!gameStarted && <StartButton onClick={handleStartClick} />}
+      {!gameStarted && <Buttons onClick={handleStartClick} name='Start Game' classname='start-button-container' />}
       {gameStarted && (
         <section>
           <div className="dealer">
@@ -108,9 +108,9 @@ function App() {
             <Points number={dealerPoints} />
           </div>
           <div className="button-container">
-            <HitButton onClick={handleHitClick} />
+            <Buttons onClick={handleHitClick} name='Hit' classname='container' />
             <ShowWinner message={winnerMessage} />
-            <StandButton onClick={handleStandClick} />
+            <Buttons onClick={handleStandClick} name='Stand' classname='container' />
           </div>
           <div className="player">
             {playerCards.map((card, index) => (
