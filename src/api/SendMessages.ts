@@ -1,33 +1,29 @@
-async function SendStartGame() {
+const ERROR_MASSAGE = "Error";
+export async function sendStartGame() {
   try {
     const response = await fetch("http://localhost:5000/startgame");
-    const data = await response.json();
+    const data = response.json();
     return data;
   } catch (error) {
-    console.error("Error starting game:", error);
-    return "Error";
+    return ERROR_MASSAGE;
   }
 }
 
-async function SendHit() {
+export async function sendHit() {
   try {
     const response = await fetch("http://localhost:5000/getcard");
-    const data = await response.json();
+    const data = response.json();
     return data;
   } catch (error) {
-    console.error("Error starting game:", error);
-    return "Error";
+    return ERROR_MASSAGE;
   }
 }
-async function SendStand() {
+export async function sendStand() {
   try {
     const response = await fetch("http://localhost:5000/stand");
-    const data = await response.json();
+    const data = response.json();
     return data;
   } catch (error) {
-    console.error("Error starting game:", error);
-    return "Error";
+    return ERROR_MASSAGE;
   }
 }
-
-export { SendStartGame, SendHit, SendStand };
