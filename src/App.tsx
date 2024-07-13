@@ -48,7 +48,7 @@ function App() {
     if (data.howisthewinner) {
       setGameEnd(true);
       setDealerCards([data.dealerfirstcard, data.dealerCard]);
-      setDealerPoints(data.delerPoints);
+      setDealerPoints(data.dealerPoints);
       setTimeout(() => {
         setWinnerMessage(data.howisthewinner);
         resetGame();
@@ -66,7 +66,7 @@ function App() {
         setGameEnd(true);
         const rememberCard = dealerCards[1];
         setDealerCards([data.dealerfirstcard, rememberCard]);
-        setDealerPoints(data.delerPoints);
+        setDealerPoints(data.dealerPoints);
         setTimeout(() => {
           setWinnerMessage(data.howisthewinner);
           resetGame();
